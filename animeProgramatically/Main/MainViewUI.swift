@@ -94,6 +94,12 @@ class MainViewUI: UIView{
         button.addTarget(self, action: #selector(refreshPicture), for: .touchUpInside)
         return button
     }()
+    public lazy var activityIndicator: UIActivityIndicatorView = {
+       let activity = UIActivityIndicatorView()
+        activity.translatesAutoresizingMaskIntoConstraints = false
+        activity.color = .orange
+        return activity
+    }()
     
     public convenience init(
         navigation: UINavigationController,
@@ -126,6 +132,9 @@ class MainViewUI: UIView{
         gestoTap.numberOfTouchesRequired = 1
         self.addGestureRecognizer(gestoTap)
         self.isUserInteractionEnabled = true
+        self.addSubview(activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
         
         
     }
@@ -158,6 +167,9 @@ class MainViewUI: UIView{
 //            randomButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             randomButton.heightAnchor.constraint(equalToConstant: 40),
             
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
         ])
         sfw.setUi(reference: sfw)
         nsfw.setUi(reference: nsfw)
@@ -172,6 +184,7 @@ class MainViewUI: UIView{
         // fin imagen
     }
     @objc private func refreshPicture(){
+        activityIndicator.startAnimating()
         self.delegate?.notifyOptionChosed(endPoint: estoCambiara)
     }
     
