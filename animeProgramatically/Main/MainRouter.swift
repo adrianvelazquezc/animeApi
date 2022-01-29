@@ -13,11 +13,6 @@ class MainRouter{
 }
 
 extension MainRouter: MainRouterProtocol{
-    func navigateRegisterForm(delegate: OptionChoosenProtocol) {
-        print("1111111")
-        print(delegate)
-        
-    }
         
     
 }

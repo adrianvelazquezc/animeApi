@@ -16,9 +16,14 @@ class MainPresenter {
 
 
 extension MainPresenter: MainPresenterProtocol {
-    func requestRegisterForm(delegate: OptionChoosenProtocol) {
-        self.router?.navigateRegisterForm(delegate: delegate)
+    func requestListUrl() {
+        self.interactor?.getListUrl()
     }
+    
+    func responseListUrl(urlListResponse: String) {
+        self.view?.notifyListUrl(urlList: urlListResponse)
+    }
+    
     
     
 }

@@ -14,6 +14,7 @@ protocol MainViewUIDelegate {
 
 class MainViewUI: UIView{
     var delegate: MainViewUIDelegate?
+    internal var tryImage = ""
     var navigationController: UINavigationController?
     let optionArray: [Option] = [Option(title: "valor 1", endPoint: "endpoint1"),
                                  Option(title: "valor2", endPoint: "endpoint2"),
@@ -31,17 +32,17 @@ class MainViewUI: UIView{
         return label
     }()
     
-    
+    //se esta creando una instancia del componente de tipo OptionChoosed
     private lazy var asdasdas: OptionChoosed = {
         let button = OptionChoosed(options: optionArray, parent: self)
+        button.delegate = self
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private lazy var animeImage: UIImageView = {
+    public lazy var animeImage: UIImageView = {
        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(systemName: "house")
         return image
     }()
     
@@ -90,5 +91,21 @@ class MainViewUI: UIView{
             
         ])
         asdasdas.setUi(reference: asdasdas)
+        
+//        if let url = URL(string: "https://i.waifu.pics/n-Avxt-.jpg"){
+//            if let data = try? Data(contentsOf: url) {
+//                DispatchQueue.main.async {
+//                    self.animeImage.image = UIImage(data: data)
+//                }
+//            }
+//        }
+        // fin imagen
     }
 }
+extension MainViewUI: OptionChoosenProtocol {
+    func didChoiceOption(_ gender: String) {
+        print(gender)
+    }
+}
+
+

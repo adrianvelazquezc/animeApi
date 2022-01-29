@@ -18,20 +18,29 @@ class MainView: UIViewController {
             navigation: self.navigationController!,
             delegate: self
         )
-        self.presenter?.requestRegisterForm(delegate: self)
         view = ui
+    }
+    
+    override func viewDidLoad() {
+        self.presenter?.requestListUrl()
+        
     }
 }
 
 extension MainView: MainViewProtocol {
+    func notifyListUrl(urlList: String) {
+        if let url = URL(string: "\(urlList)"){
+            if let data = try? Data(contentsOf: url) {
+                DispatchQueue.main.async {
+                    self.ui?.animeImage.image = UIImage(data: data)
+                }
+            }
+        }
+    }
+    
     
 }
 
 extension MainView: MainViewUIDelegate {
     
-}
-extension MainView: OptionChoosenProtocol {
-    func didChoiceOption(_ gender: String) {
-        print("aaaa")
-    }
 }

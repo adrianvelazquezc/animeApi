@@ -24,9 +24,12 @@ public struct Option {
 }
 
 open class OptionChoosed: UIView {
-    var delegate: OptionChoosenProtocol?
+    internal var delegate: OptionChoosenProtocol?
     public var heightSize = 0.0
     public var parent: UIView?
+    private var scrollViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    
+    
     private lazy var choosedButton: UIButton = {
     let button = UIButton()
         button.setTitle("aaa", for: .normal)
@@ -37,7 +40,7 @@ open class OptionChoosed: UIView {
     }()
     private lazy var scrollView: UIScrollView = {
        let scrollView = UIScrollView()
-        scrollView.isHidden = true
+//        scrollView.isHidden = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.bounces = false
         return scrollView
@@ -87,7 +90,12 @@ open class OptionChoosed: UIView {
         }
     
     @objc func selectAnOption(){
-         scrollView.isHidden = false
+//         scrollView.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            self.scrollViewHeightConstraint.constant = self.heightSize
+            self.parent?.layoutIfNeeded()
+        }
+        
     }
     // el guion bajo siempre se tiene que hacer al pasar referencia para pasar parametro
     @objc func genderChoosedTapped(_ sender: OptionChoosedButton){
@@ -95,20 +103,23 @@ open class OptionChoosed: UIView {
         let endPoin = sender.endPoint
 //        print(endPoin)
         choosedButton.setTitle(sender.titleLabel?.text, for: .normal)
-        scrollView.isHidden = true
+//        scrollView.isHidden = true
+        UIView.animate(withDuration: 0.2) {
+            self.scrollViewHeightConstraint.constant = 0
+            self.parent?.layoutIfNeeded()
+        }
         delegate?.didChoiceOption(endPoin)
-        // llamar a la funcion del delegado
-            //caera en el main
         //view controller de ahi al presenter de ahi al interactor
     }
     
     public func setUi(reference: UIView){
+        scrollViewHeightConstraint = scrollView.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
         scrollView.topAnchor.constraint(equalTo: reference.bottomAnchor),
         scrollView.leadingAnchor.constraint(equalTo: reference.leadingAnchor),
         scrollView.trailingAnchor.constraint(equalTo: reference.trailingAnchor),
-        scrollView.heightAnchor.constraint(equalToConstant: heightSize),
         scrollView.widthAnchor.constraint(equalTo: reference.widthAnchor),
+        scrollViewHeightConstraint,
         
         stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
         stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),

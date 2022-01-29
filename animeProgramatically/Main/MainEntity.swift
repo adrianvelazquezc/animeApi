@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct PicturesDetailResponse: Codable  {
+    let url: String?
+}

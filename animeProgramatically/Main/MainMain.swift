@@ -16,10 +16,6 @@ open class MainMain{
             let router = MainRouter()
             let interactor = MainInteractor()
             
-            let controller = OptionChoosed()
-            var delegate: OptionChoosenProtocol?
-            delegate = controller.delegate
-            view.delegate = delegate
             
             
             view.presenter = presenter

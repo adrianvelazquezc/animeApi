@@ -8,17 +8,17 @@
 import Foundation
 
 protocol MainViewProtocol: AnyObject {
-    
+    func notifyListUrl(urlList: String)
 }
 
 protocol MainInteractorProtocol: AnyObject {
-    
+    func getListUrl()
 }
 
 protocol MainPresenterProtocol: AnyObject {
-    func requestRegisterForm(delegate: OptionChoosenProtocol)
+    func requestListUrl()
+    func responseListUrl(urlListResponse: String)
 }
 
 protocol MainRouterProtocol: AnyObject {
-    func navigateRegisterForm(delegate: OptionChoosenProtocol)
 }
