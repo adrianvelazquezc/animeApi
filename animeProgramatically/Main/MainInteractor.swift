@@ -26,7 +26,7 @@ extension MainInteractor: MainInteractorProtocol {
     }
     
     func getUrl(endPoint: String, completionHandler:@escaping(PicturesDetailResponse?,Int?,Error?)->Void){
-            let urlString = "https://api.waifu.pics/sfw/\(endPoint)"
+            let urlString = "https://api.waifu.pics/\(endPoint)"
             if let urlObject = URL(string: urlString){
                 var urlRequest = URLRequest(url: urlObject)
                 urlRequest.httpMethod = "GET"

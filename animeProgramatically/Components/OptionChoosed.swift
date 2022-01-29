@@ -32,15 +32,15 @@ open class OptionChoosed: UIView {
     
     private lazy var choosedButton: UIButton = {
     let button = UIButton()
-        button.setTitle("aaa", for: .normal)
+        button.setTitle("Choose a Gender", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
+        button.layer.cornerRadius = 15
+        button.backgroundColor = .systemPink
         button.addTarget(self, action: #selector(selectAnOption), for: .touchUpInside)
         return button
     }()
     private lazy var scrollView: UIScrollView = {
        let scrollView = UIScrollView()
-//        scrollView.isHidden = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.bounces = false
         return scrollView
@@ -51,7 +51,7 @@ open class OptionChoosed: UIView {
         stackView.alignment = UIStackView.Alignment.center
         stackView.spacing   = 5.0
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .white
+        stackView.backgroundColor = .clear
         return stackView
     }()
     
@@ -67,14 +67,13 @@ open class OptionChoosed: UIView {
         } else {
             heightSize = Double((options.count * 40))
         }
-        
         setSecondsConstrains()
-        
         
         for option in options {
             let titleForGender = OptionChoosedButton(option.endPoint, option.title)
             titleForGender.translatesAutoresizingMaskIntoConstraints = false
-            titleForGender.backgroundColor = .blue
+            titleForGender.backgroundColor = .link
+            titleForGender.layer.cornerRadius = 15
             titleForGender.addTarget(self, action: #selector(genderChoosedTapped(_:)), for: .touchUpInside)
             
             stackView.addArrangedSubview(titleForGender)
@@ -145,6 +144,14 @@ open class OptionChoosed: UIView {
             choosedButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             choosedButton.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
+    }
+    
+    public func hiddeWhenTapped(){// seleccionar fuera del stack view
+        UIView.animate(withDuration: 1.0) { //inicio animacion
+            self.scrollViewHeightConstraint.constant = 0 //accion de animacion
+            self.parent?.layoutIfNeeded() // actualiza visualmente
+        } // fin animacion
+//        print("ya jala")
     }
 }
 

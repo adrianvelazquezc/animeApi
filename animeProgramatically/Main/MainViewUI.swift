@@ -15,53 +15,66 @@ protocol MainViewUIDelegate {
 class MainViewUI: UIView{
     var delegate: MainViewUIDelegate?
     internal var tryImage = ""
-    internal var estoCambiara = "neko"
+    internal var estoCambiara = "sfw/neko"
     var navigationController: UINavigationController?
-    let optionArray: [Option] = [Option(title: "Neko", endPoint: "neko"),
-                                 Option(title: "Waifu", endPoint: "waifu"),
-                                 Option(title: "shinobu", endPoint: "shinobu"),
-                                 Option(title: "megumin", endPoint: "megumin"),
-                                 Option(title: "bully", endPoint: "bully"),
-                                 Option(title: "cuddle", endPoint: "cuddle"),
-                                 Option(title: "cry", endPoint: "cry"),
-                                 Option(title: "hug", endPoint: "hug"),
-                                 Option(title: "awoo", endPoint: "awoo"),
-                                 Option(title: "kiss", endPoint: "kiss"),
-                                 Option(title: "lick", endPoint: "lick"),
-                                 Option(title: "pat", endPoint: "pat"),
-                                 Option(title: "smug", endPoint: "smug"),
-                                 Option(title: "bonk", endPoint: "bonk"),
-                                 Option(title: "yeet", endPoint: "yeet"),
-                                 Option(title: "blush", endPoint: "blush"),
-                                 Option(title: "smile", endPoint: "smile"),
-                                 Option(title: "wave", endPoint: "wave"),
-                                 Option(title: "highfive", endPoint: "highfive"),
-                                 Option(title: "nom", endPoint: "nom"),
-                                 Option(title: "bite", endPoint: "bite"),
-                                 Option(title: "handhold", endPoint: "handhold"),
-                                 Option(title: "glomp", endPoint: "glomp"),
-                                 Option(title: "slap", endPoint: "slap"),
-                                 Option(title: "kill", endPoint: "kill"),
-                                 Option(title: "kick", endPoint: "kick"),
-                                 Option(title: "happy", endPoint: "happy"),
-                                 Option(title: "wink", endPoint: "wink"),
-                                 Option(title: "poke", endPoint: "poke"),
-                                 Option(title: "dance", endPoint: "dance"),
-                                 Option(title: "cringe", endPoint: "cringe"),
-                                 
+    let optionArray: [Option] = [Option(title: "Neko", endPoint: "sfw/neko"),
+                                 Option(title: "Waifu", endPoint: "sfw/waifu"),
+                                 Option(title: "shinobu", endPoint: "sfw/shinobu"),
+                                 Option(title: "megumin", endPoint: "sfw/megumin"),
+                                 Option(title: "bully", endPoint: "sfw/bully"),
+                                 Option(title: "cuddle", endPoint: "sfw/cuddle"),
+                                 Option(title: "cry", endPoint: "sfw/cry"),
+                                 Option(title: "hug", endPoint: "sfw/hug"),
+                                 Option(title: "awoo", endPoint: "sfw/awoo"),
+                                 Option(title: "kiss", endPoint: "sfw/kiss"),
+                                 Option(title: "lick", endPoint: "sfw/lick"),
+                                 Option(title: "pat", endPoint: "sfw/pat"),
+                                 Option(title: "smug", endPoint: "sfw/smug"),
+                                 Option(title: "bonk", endPoint: "sfw/bonk"),
+                                 Option(title: "yeet", endPoint: "sfw/yeet"),
+                                 Option(title: "blush", endPoint: "sfw/blush"),
+                                 Option(title: "smile", endPoint: "sfw/smile"),
+                                 Option(title: "wave", endPoint: "sfw/wave"),
+                                 Option(title: "highfive", endPoint: "sfw/highfive"),
+                                 Option(title: "nom", endPoint: "sfw/nom"),
+                                 Option(title: "bite", endPoint: "sfw/bite"),
+                                 Option(title: "handhold", endPoint: "sfw/handhold"),
+                                 Option(title: "glomp", endPoint: "sfw/glomp"),
+                                 Option(title: "slap", endPoint: "sfw/slap"),
+                                 Option(title: "kill", endPoint: "sfw/kill"),
+                                 Option(title: "kick", endPoint: "sfw/kick"),
+                                 Option(title: "happy", endPoint: "sfw/happy"),
+                                 Option(title: "wink", endPoint: "sfw/wink"),
+                                 Option(title: "poke", endPoint: "sfw/poke"),
+                                 Option(title: "dance", endPoint: "sfw/dance"),
+                                 Option(title: "cringe", endPoint: "sfw/cringe"),
     ]
+    
+    let optionArrayNSFW: [Option] = [Option(title: "waifu", endPoint: "nsfw/waifu"),
+                                     Option(title: "neko", endPoint: "nsfw/neko"),
+                                     Option(title: "trap", endPoint: "nsfw/trap"),
+                                     Option(title: "blowjob", endPoint: "nsfw/blowjob"),
+                                     ]
     
     private lazy var welcomeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Welcome to suffering ^-^"
+        label.text = "Welcome to happiness ^-^"
+        label.textColor = .link
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
     }()
     
-    //se esta creando una instancia del componente de tipo OptionChoosed
-    private lazy var asdasdas: OptionChoosed = {
+    //se esta creando una instancia del componente de tipo OptionChoosed y a su vez si utilizas sfw. utilizas la referencia con su OptionChoosed
+    private lazy var sfw: OptionChoosed = {
         let button = OptionChoosed(options: optionArray, parent: self)
+        button.delegate = self
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    //se esta creando una instancia del componente de tipo OptionChoosed y a su vez si utilizas nsfw. utilizas la referencia con su OptionChoosed
+    private lazy var nsfw: OptionChoosed = {
+        let button = OptionChoosed(options: optionArrayNSFW, parent: self)
         button.delegate = self
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -76,6 +89,8 @@ class MainViewUI: UIView{
         let button = UIButton()
         button.setTitle("Refresh", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemPink
+        button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(refreshPicture), for: .touchUpInside)
         return button
     }()
@@ -100,37 +115,52 @@ class MainViewUI: UIView{
     }
     
     func setUI(){
-        self.backgroundColor = .gray
+        self.backgroundColor = .white
         self.addSubview(welcomeLabel)
         self.addSubview(animeImage)
-        self.addSubview(asdasdas)
+        self.addSubview(sfw)
+        self.addSubview(nsfw)
         self.addSubview(randomButton)
+        let gestoTap = UITapGestureRecognizer(target: self, action: #selector(dissmissStack(_:)))
+        gestoTap.numberOfTapsRequired = 1
+        gestoTap.numberOfTouchesRequired = 1
+        self.addGestureRecognizer(gestoTap)
+        self.isUserInteractionEnabled = true
+        
+        
     }
     func setConstraints(){
         NSLayoutConstraint.activate([
-            welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            welcomeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            welcomeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            welcomeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            welcomeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 80),
             
             
-            asdasdas.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
-            asdasdas.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            asdasdas.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            asdasdas.heightAnchor.constraint(equalToConstant: 40),
+            sfw.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
+            sfw.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            sfw.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -20),
+            sfw.heightAnchor.constraint(equalToConstant: 40),
+
+            nsfw.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
+            nsfw.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: 20),
+            nsfw.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            nsfw.heightAnchor.constraint(equalToConstant: 40),
             
-            animeImage.topAnchor.constraint(equalTo: asdasdas.bottomAnchor),
+            animeImage.topAnchor.constraint(equalTo: sfw.bottomAnchor),
             animeImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             animeImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            animeImage.heightAnchor.constraint(equalToConstant: 400),
+            animeImage.heightAnchor.constraint(equalToConstant: 700),
             
             randomButton.topAnchor.constraint(equalTo: animeImage.bottomAnchor),
             randomButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             randomButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+//            randomButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             randomButton.heightAnchor.constraint(equalToConstant: 40),
             
         ])
-        asdasdas.setUi(reference: asdasdas)
+        sfw.setUi(reference: sfw)
+        nsfw.setUi(reference: nsfw)
         
 //        if let url = URL(string: "https://i.waifu.pics/n-Avxt-.jpg"){
 //            if let data = try? Data(contentsOf: url) {
@@ -142,15 +172,17 @@ class MainViewUI: UIView{
         // fin imagen
     }
     @objc private func refreshPicture(){
-        print(estoCambiara)
         self.delegate?.notifyOptionChosed(endPoint: estoCambiara)
+    }
+    
+    @objc func dissmissStack(_ sender: UITapGestureRecognizer){
+        nsfw.hiddeWhenTapped()//se utiliza la referencia de nsfw para cambiar las propiedades del alto del stack view
+        sfw.hiddeWhenTapped() //se utiliza la referencia de sfw para cambiar las propiedades del alto del stack view
     }
 }
 extension MainViewUI: OptionChoosenProtocol {
     func didChoiceOption(_ gender: String) {
-        print(gender)
         estoCambiara = gender
-        print(estoCambiara)
         self.delegate?.notifyOptionChosed(endPoint: gender)
     }
 }
