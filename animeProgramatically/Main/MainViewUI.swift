@@ -9,20 +9,47 @@ import Foundation
 import UIKit
 
 protocol MainViewUIDelegate {
-    
+    func notifyOptionChosed(endPoint: String)
 }
 
 class MainViewUI: UIView{
     var delegate: MainViewUIDelegate?
     internal var tryImage = ""
+    internal var estoCambiara = "neko"
     var navigationController: UINavigationController?
-    let optionArray: [Option] = [Option(title: "valor 1", endPoint: "endpoint1"),
-                                 Option(title: "valor2", endPoint: "endpoint2"),
-                                 Option(title: "valor3", endPoint: "endpoint3"),
-                                 Option(title: "valor4", endPoint: "endpoint4"),
+    let optionArray: [Option] = [Option(title: "Neko", endPoint: "neko"),
+                                 Option(title: "Waifu", endPoint: "waifu"),
+                                 Option(title: "shinobu", endPoint: "shinobu"),
+                                 Option(title: "megumin", endPoint: "megumin"),
+                                 Option(title: "bully", endPoint: "bully"),
+                                 Option(title: "cuddle", endPoint: "cuddle"),
+                                 Option(title: "cry", endPoint: "cry"),
+                                 Option(title: "hug", endPoint: "hug"),
+                                 Option(title: "awoo", endPoint: "awoo"),
+                                 Option(title: "kiss", endPoint: "kiss"),
+                                 Option(title: "lick", endPoint: "lick"),
+                                 Option(title: "pat", endPoint: "pat"),
+                                 Option(title: "smug", endPoint: "smug"),
+                                 Option(title: "bonk", endPoint: "bonk"),
+                                 Option(title: "yeet", endPoint: "yeet"),
+                                 Option(title: "blush", endPoint: "blush"),
+                                 Option(title: "smile", endPoint: "smile"),
+                                 Option(title: "wave", endPoint: "wave"),
+                                 Option(title: "highfive", endPoint: "highfive"),
+                                 Option(title: "nom", endPoint: "nom"),
+                                 Option(title: "bite", endPoint: "bite"),
+                                 Option(title: "handhold", endPoint: "handhold"),
+                                 Option(title: "glomp", endPoint: "glomp"),
+                                 Option(title: "slap", endPoint: "slap"),
+                                 Option(title: "kill", endPoint: "kill"),
+                                 Option(title: "kick", endPoint: "kick"),
+                                 Option(title: "happy", endPoint: "happy"),
+                                 Option(title: "wink", endPoint: "wink"),
+                                 Option(title: "poke", endPoint: "poke"),
+                                 Option(title: "dance", endPoint: "dance"),
+                                 Option(title: "cringe", endPoint: "cringe"),
+                                 
     ]
-    
-    
     
     private lazy var welcomeLabel: UILabel = {
         let label = UILabel()
@@ -44,6 +71,13 @@ class MainViewUI: UIView{
        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
+    }()
+    private lazy var randomButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Refresh", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(refreshPicture), for: .touchUpInside)
+        return button
     }()
     
     public convenience init(
@@ -70,6 +104,7 @@ class MainViewUI: UIView{
         self.addSubview(welcomeLabel)
         self.addSubview(animeImage)
         self.addSubview(asdasdas)
+        self.addSubview(randomButton)
     }
     func setConstraints(){
         NSLayoutConstraint.activate([
@@ -89,6 +124,11 @@ class MainViewUI: UIView{
             animeImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             animeImage.heightAnchor.constraint(equalToConstant: 400),
             
+            randomButton.topAnchor.constraint(equalTo: animeImage.bottomAnchor),
+            randomButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            randomButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            randomButton.heightAnchor.constraint(equalToConstant: 40),
+            
         ])
         asdasdas.setUi(reference: asdasdas)
         
@@ -101,10 +141,17 @@ class MainViewUI: UIView{
 //        }
         // fin imagen
     }
+    @objc private func refreshPicture(){
+        print(estoCambiara)
+        self.delegate?.notifyOptionChosed(endPoint: estoCambiara)
+    }
 }
 extension MainViewUI: OptionChoosenProtocol {
     func didChoiceOption(_ gender: String) {
         print(gender)
+        estoCambiara = gender
+        print(estoCambiara)
+        self.delegate?.notifyOptionChosed(endPoint: gender)
     }
 }
 

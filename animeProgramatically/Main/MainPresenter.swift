@@ -16,9 +16,10 @@ class MainPresenter {
 
 
 extension MainPresenter: MainPresenterProtocol {
-    func requestListUrl() {
-        self.interactor?.getListUrl()
+    func requestListUrl(endPoint: String) {
+        self.interactor?.getListUrl(endPoint: endPoint)
     }
+    
     
     func responseListUrl(urlListResponse: String) {
         self.view?.notifyListUrl(urlList: urlListResponse)

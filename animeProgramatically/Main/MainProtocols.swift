@@ -12,11 +12,11 @@ protocol MainViewProtocol: AnyObject {
 }
 
 protocol MainInteractorProtocol: AnyObject {
-    func getListUrl()
+    func getListUrl(endPoint: String)
 }
 
 protocol MainPresenterProtocol: AnyObject {
-    func requestListUrl()
+    func requestListUrl(endPoint: String)
     func responseListUrl(urlListResponse: String)
 }
 

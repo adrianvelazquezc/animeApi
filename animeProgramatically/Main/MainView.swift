@@ -22,8 +22,7 @@ class MainView: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.presenter?.requestListUrl()
-        
+        self.presenter?.requestListUrl(endPoint: "neko")
     }
 }
 
@@ -42,5 +41,9 @@ extension MainView: MainViewProtocol {
 }
 
 extension MainView: MainViewUIDelegate {
+    func notifyOptionChosed(endPoint: String) {
+        self.presenter?.requestListUrl(endPoint: endPoint)
+    }
+    
     
 }
