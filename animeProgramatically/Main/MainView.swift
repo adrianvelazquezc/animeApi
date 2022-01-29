@@ -32,7 +32,7 @@ extension MainView: MainViewProtocol {
         if let url = URL(string: "\(urlList)"){
             if let data = try? Data(contentsOf: url) {
                 DispatchQueue.main.async {
-                    self.ui?.animeImage.image = UIImage.(data: data)
+                    self.ui?.animeImage.image = UIImage(data: data)
                 }
             }
         }
