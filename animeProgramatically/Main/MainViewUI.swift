@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 protocol MainViewUIDelegate {
     func notifyOptionChosed(endPoint: String)
@@ -16,6 +17,7 @@ class MainViewUI: UIView{
     var delegate: MainViewUIDelegate?
     internal var tryImage = ""
     internal var estoCambiara = "sfw/neko"
+    
     var navigationController: UINavigationController?
     let optionArray: [Option] = [Option(title: "Neko", endPoint: "sfw/neko"),
                                  Option(title: "Waifu", endPoint: "sfw/waifu"),
@@ -83,6 +85,7 @@ class MainViewUI: UIView{
     public lazy var animeImage: UIImageView = {
        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = UIView.ContentMode.scaleAspectFit
         return image
     }()
     private lazy var randomButton: UIButton = {
@@ -99,6 +102,23 @@ class MainViewUI: UIView{
         activity.translatesAutoresizingMaskIntoConstraints = false
         activity.color = .orange
         return activity
+    }()
+    
+    public lazy var loadinLabel: UILabel = {
+       let label = UILabel()
+        label.text = "Loading..."
+        label.textAlignment = .center
+        label.font = label.font.withSize(50)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public lazy var animationView: AnimationView = {
+       let animation = AnimationView(name: "24203-menhera-chan-at-cocopry-sticker-5")
+        animation.translatesAutoresizingMaskIntoConstraints = false
+        animation.loopMode = .loop
+        animation.play()
+        return animation
     }()
     
     public convenience init(
@@ -124,9 +144,12 @@ class MainViewUI: UIView{
         self.backgroundColor = .white
         self.addSubview(welcomeLabel)
         self.addSubview(animeImage)
+        self.addSubview(animationView)
+        self.addSubview(loadinLabel)
         self.addSubview(sfw)
         self.addSubview(nsfw)
         self.addSubview(randomButton)
+        
         let gestoTap = UITapGestureRecognizer(target: self, action: #selector(dissmissStack(_:)))
         gestoTap.numberOfTapsRequired = 1
         gestoTap.numberOfTouchesRequired = 1
@@ -135,6 +158,7 @@ class MainViewUI: UIView{
         self.addSubview(activityIndicator)
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
+        
         
         
     }
@@ -161,10 +185,19 @@ class MainViewUI: UIView{
             animeImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             animeImage.heightAnchor.constraint(equalToConstant: 700),
             
+            
+            loadinLabel.topAnchor.constraint(equalTo: sfw.bottomAnchor),
+            loadinLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            loadinLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            loadinLabel.heightAnchor.constraint(equalToConstant: 100),
+            animationView.topAnchor.constraint(equalTo: loadinLabel.bottomAnchor),
+            animationView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            animationView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            animationView.heightAnchor.constraint(equalToConstant: 600),
+            
             randomButton.topAnchor.constraint(equalTo: animeImage.bottomAnchor),
             randomButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             randomButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//            randomButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             randomButton.heightAnchor.constraint(equalToConstant: 40),
             
             activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -184,7 +217,10 @@ class MainViewUI: UIView{
         // fin imagen
     }
     @objc private func refreshPicture(){
-        activityIndicator.startAnimating()
+        animeImage.isHidden = true
+        animationView.isHidden = false
+        loadinLabel.isHidden = false
+        animationView.play()
         self.delegate?.notifyOptionChosed(endPoint: estoCambiara)
     }
     
@@ -195,7 +231,12 @@ class MainViewUI: UIView{
 }
 extension MainViewUI: OptionChoosenProtocol {
     func didChoiceOption(_ gender: String) {
+//        activityIndicator.isHidden = false
         estoCambiara = gender
+        animeImage.isHidden = true
+        animationView.isHidden = false
+        loadinLabel.isHidden = false
+        animationView.play()
         self.delegate?.notifyOptionChosed(endPoint: gender)
     }
 }

@@ -22,7 +22,8 @@ class MainView: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.presenter?.requestListUrl(endPoint: "sfw/neko")
+//        self.presenter?.requestListUrl(endPoint: "sfw/neko")
+        self.ui?.activityIndicator.stopAnimating()
         navigationController?.isNavigationBarHidden = true
     }
 }
@@ -32,8 +33,12 @@ extension MainView: MainViewProtocol {
         if let url = URL(string: "\(urlList)"){
             if let data = try? Data(contentsOf: url) {
                 DispatchQueue.main.async {
-                    self.ui?.animeImage.image = UIImage(data: data)
-                    self.ui?.activityIndicator.stopAnimating()
+                    let image = UIImage(data: data)
+                    self.ui?.animeImage.image = image
+//                    self.ui?.activityIndicator.stopAnimating()
+                    self.ui?.animeImage.isHidden = false
+                    self.ui?.animationView.isHidden = true
+                    self.ui?.loadinLabel.isHidden = true
                 }
             }
         }
